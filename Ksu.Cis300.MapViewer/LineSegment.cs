@@ -34,7 +34,7 @@ namespace Ksu.Cis300.MapViewer
         /// <summary>
         /// Pen field used to store the pen used to draw the line.
         /// </summary>
-        private Pen _pen; //please change name its so bad omg. If you're reading this then I changed my mind its really good actually.
+        private Pen _pen;
 
         /// <summary>
         /// LineSegment constructor. Used for creating a new LineSegment.
@@ -65,11 +65,6 @@ namespace Ksu.Cis300.MapViewer
         /// <returns>Returns a LineSegment describing the reflection.</returns>
         public LineSegment Reflect()
         {
-            /*
-            PointF start = new PointF(Start.Y, Start.X);
-            PointF end = new PointF(End.Y, End.X);
-            return new LineSegment(start, end, MinZoom, _pen);
-            */
             return new LineSegment(new PointF(Start.Y, Start.X), new PointF(End.Y, End.X), MinZoom, _pen);
         }
 
