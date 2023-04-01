@@ -9,6 +9,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static System.Windows.Forms.AxHost;
 
 namespace Ksu.Cis300.MapViewer
 {
@@ -70,7 +71,7 @@ namespace Ksu.Cis300.MapViewer
         /// <summary>
         /// A Dictionary<(int, float), Pen> to contain the Pens used for drawing line segments.
         /// </summary>
-        private static Dictionary<(int, float), Pen> _pens;
+        private static Dictionary<(int, float), Pen> _pens = new Dictionary<(int, float), Pen>();
 
         /// <summary>
         /// Builds a tree;
@@ -159,7 +160,7 @@ namespace Ksu.Cis300.MapViewer
                 lineSegments = new List<LineSegment>();
 
                 int currentLine = 2;
-                while (((line = input.ReadLine()) != ""))
+                while ((line = input.ReadLine()) != null)
                 {
                     ReadLine(line, out float startX, out float startY, out float endX, out float endY, out int color, out float lineWidth, out int zoomLevel);
                     //error checking
@@ -183,7 +184,8 @@ namespace Ksu.Cis300.MapViewer
                     currentLine++;
                 }
             }
-            return BuildTree(lineSegments, rectangle, 0, false, out maxZoomLevel); //fix
+            return BuildTree(lineSegments, rectangle, 0, true, out maxZoomLevel); //fix
+            
         }
         /// <summary>
         /// Used to read the first line of a file. 1/2 additional private methods.
@@ -194,8 +196,8 @@ namespace Ksu.Cis300.MapViewer
         private static void ReadFirstLine(string s, out float x, out float y)
         {
             string[] split = s.Split(',');
-            x = (float)split[0][0]; //make sure these are correct.
-            y = (float)split[1][0];
+            x = (float)Convert.ToDouble(split[_startX]);
+            y = (float)Convert.ToDouble(split[_startY]);
         }
 
         /// <summary>
@@ -212,13 +214,13 @@ namespace Ksu.Cis300.MapViewer
         private static void ReadLine(string s, out float startX, out float startY, out float endX, out float endY, out int color, out float lineWidth, out int zoomLevel)
         {
             string[] split = s.Split(',');
-            startX = (float)split[0][0]; //make sure these are correct.
-            startY = (float)split[1][0];
-            endX = (float)split[2][0];
-            endY = (float)split[3][0];
-            color = (int)split[4][0];
-            lineWidth = (float)split[5][0];
-            zoomLevel = (int)split[6][0];
+            startX = (float)Convert.ToDouble(split[_startX]);
+            startY = (float)Convert.ToDouble(split[_startY]);
+            endX = (float)Convert.ToDouble(split[_endX]);
+            endY = (float)Convert.ToDouble(split[_endY]);
+            color = Convert.ToInt32(split[_color]);
+            lineWidth = (float)Convert.ToDouble(split[_lineWidth]);
+            zoomLevel = Convert.ToInt32(split[_zoomLevel]);
         }
 
         /// <summary>
@@ -237,7 +239,7 @@ namespace Ksu.Cis300.MapViewer
                 float convertedWidth = quadTree.Data.Bounds.Width * currentScale;
                 float convertedHeight = quadTree.Data.Bounds.Height * currentScale;
                 RectangleF convertedRectangle = new RectangleF(convertedX, convertedY, convertedWidth, convertedHeight);
-                if (convertedRectangle.IntersectsWith(graphics.ClipBounds) && quadTree.Data.ZoomLevel <= zoomLevel)
+                if (convertedRectangle.IntersectsWith(graphics.ClipBounds) && quadTree.Data.Zoom <= zoomLevel)
                 {
                     foreach(LineSegment ls in quadTree.Data.Lines)
                     {

@@ -33,8 +33,8 @@
             this.uxZoomInToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.uxZoomOutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.uxFlowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
-            this.map1 = new Ksu.Cis300.MapViewer.Map();
             this.uxOpenFileDialog1 = new System.Windows.Forms.OpenFileDialog();
+            this.map1 = new Ksu.Cis300.MapViewer.Map();
             this.uxMenuStrip1.SuspendLayout();
             this.uxFlowLayoutPanel1.SuspendLayout();
             this.SuspendLayout();
@@ -56,22 +56,25 @@
             // uxOpenFileToolStripMenuItem
             // 
             this.uxOpenFileToolStripMenuItem.Name = "uxOpenFileToolStripMenuItem";
-            this.uxOpenFileToolStripMenuItem.Size = new System.Drawing.Size(103, 29);
+            this.uxOpenFileToolStripMenuItem.Size = new System.Drawing.Size(103, 30);
             this.uxOpenFileToolStripMenuItem.Text = "Open File";
             this.uxOpenFileToolStripMenuItem.Click += new System.EventHandler(this.uxOpenFileToolStripMenuItem_Click);
             // 
             // uxZoomInToolStripMenuItem
             // 
+            this.uxZoomInToolStripMenuItem.Enabled = false;
             this.uxZoomInToolStripMenuItem.Name = "uxZoomInToolStripMenuItem";
-            this.uxZoomInToolStripMenuItem.Size = new System.Drawing.Size(96, 29);
+            this.uxZoomInToolStripMenuItem.Size = new System.Drawing.Size(96, 30);
             this.uxZoomInToolStripMenuItem.Text = "Zoom In";
             this.uxZoomInToolStripMenuItem.Click += new System.EventHandler(this.uxZoomInToolStripMenuItem_Click);
             // 
             // uxZoomOutToolStripMenuItem
             // 
+            this.uxZoomOutToolStripMenuItem.Enabled = false;
             this.uxZoomOutToolStripMenuItem.Name = "uxZoomOutToolStripMenuItem";
             this.uxZoomOutToolStripMenuItem.Size = new System.Drawing.Size(111, 29);
             this.uxZoomOutToolStripMenuItem.Text = "Zoom Out";
+            this.uxZoomOutToolStripMenuItem.Click += new System.EventHandler(this.uxZoomOutToolStripMenuItem_Click);
             // 
             // uxFlowLayoutPanel1
             // 
@@ -83,6 +86,10 @@
             this.uxFlowLayoutPanel1.Size = new System.Drawing.Size(800, 417);
             this.uxFlowLayoutPanel1.TabIndex = 1;
             // 
+            // uxOpenFileDialog1
+            // 
+            this.uxOpenFileDialog1.Filter = "CSV files|*.csv|All files|*.*";
+            // 
             // map1
             // 
             this.map1.BackColor = System.Drawing.Color.White;
@@ -93,10 +100,6 @@
             this.map1.Size = new System.Drawing.Size(150, 150);
             this.map1.TabIndex = 0;
             this.map1.ZoomLevel = 1;
-            // 
-            // uxOpenFileDialog1
-            // 
-            this.uxOpenFileDialog1.Filter = "CSV files|*.csv|All files|*.*";
             // 
             // UserInterface
             // 

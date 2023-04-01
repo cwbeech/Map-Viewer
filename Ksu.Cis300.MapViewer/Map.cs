@@ -32,7 +32,7 @@ namespace Ksu.Cis300.MapViewer
         /// <summary>
         /// A float storing the current scale factor.
         /// </summary>
-        private float _currentScaleFactor;
+        private float _scaleFactor;
 
         /// <summary>
         /// An int storing the current zoom level.
@@ -53,7 +53,7 @@ namespace Ksu.Cis300.MapViewer
             set
             {
                 _zoomLevel = value;
-                _currentScaleFactor = (float)Math.Pow(2, _zoomLevel) * _scaleAtZero;
+                _scaleFactor = (float)Math.Pow(2, _zoomLevel) * _scaleAtZero;
                 if (_quadTree == null)
                 {
                     Width = _widthAndHeight;
@@ -62,19 +62,19 @@ namespace Ksu.Cis300.MapViewer
                 else
                 {
                     SetWidthAndHeight();
-                    Invalidate();
                 }
+                Invalidate();
             }
 
         }
 
         /// <summary>
-        /// Sets Width and Height to their respective values.
+        /// Sets Width and Height to their respective values. 1/1 additional methods required.
         /// </summary>
         public void SetWidthAndHeight()
         {
-            Width = (int)(_quadTree.Data.Bounds.Width * _currentScaleFactor) + 1;
-            Height = (int)(_quadTree.Data.Bounds.Height * _currentScaleFactor) + 1;
+            Width = (int)(_quadTree.Data.Bounds.Width * _scaleFactor) + 1;
+            Height = (int)(_quadTree.Data.Bounds.Height * _scaleFactor) + 1;
         }
 
         /// <summary>
@@ -111,7 +111,7 @@ namespace Ksu.Cis300.MapViewer
             if (graphics != null)
             {
                 graphics.Clip = new Region(rectangle);
-                QuadTree.Draw(QuadTreeLocal, graphics, ZoomLevel, _currentScaleFactor);
+                QuadTree.Draw(QuadTreeLocal, graphics, ZoomLevel, _scaleFactor);
             }
         }
     }

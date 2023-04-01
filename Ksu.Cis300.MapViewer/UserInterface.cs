@@ -32,12 +32,12 @@ namespace Ksu.Cis300.MapViewer
         }
 
         /// <summary>
-        /// Updates the "Enabled" property of the "zoom in"/"zoom out" buttons.
+        /// Updates the "Enabled" property of the "zoom in"/"zoom out" buttons. 1/1 additional methods required.
         /// </summary>
         /// <param name="maxZoomLevel">An int representing the maximum zoom level.</param>
-        private void UpdateZoomButtons(int maxZoomLevel)
+        private void UpdateZoomButtons()
         {
-            if (map1.ZoomLevel != maxZoomLevel)
+            if (map1.ZoomLevel != _maxZoomLevel)
             {
                 uxZoomInToolStripMenuItem.Enabled = true;
             }
@@ -65,9 +65,9 @@ namespace Ksu.Cis300.MapViewer
             if (uxOpenFileDialog1.ShowDialog() == DialogResult.OK)
             {
                 map1.QuadTreeLocal = QuadTree.Read(uxOpenFileDialog1.FileName, out int maxZoomLevel);
-                //map1.ZoomLevel = maxZoomLevel;
                 uxFlowLayoutPanel1.AutoScrollPosition = new Point(0, 0);
-                UpdateZoomButtons(maxZoomLevel);
+                _maxZoomLevel = maxZoomLevel;
+                UpdateZoomButtons();
             }
         }
 
@@ -78,7 +78,35 @@ namespace Ksu.Cis300.MapViewer
         /// <param name="e"></param>
         private void uxZoomInToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            Point upperLeft = uxFlowLayoutPanel1.AutoScrollPosition;
+            upperLeft.X = -1 * upperLeft.X;
+            upperLeft.Y = -1 * upperLeft.Y;
+            Size visiblePortion = uxFlowLayoutPanel1.ClientSize;
 
+            map1.ZoomLevel = map1.ZoomLevel + 1; //zoom in
+            Point oldCenter = new Point(upperLeft.X + visiblePortion.Width / 2, upperLeft.Y + visiblePortion.Height / 2);
+            oldCenter = new Point(oldCenter.X * 2 + visiblePortion.Width, oldCenter.Y * 2 + visiblePortion.Height); //zoom in
+            uxFlowLayoutPanel1.AutoScrollPosition = new Point(oldCenter.X - visiblePortion.Width / 2, oldCenter.Y - visiblePortion.Height);
+            UpdateZoomButtons();
+        }
+
+        /// <summary>
+        /// Event handler for the "Zoom out" button.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void uxZoomOutToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Point upperLeft = uxFlowLayoutPanel1.AutoScrollPosition;
+            upperLeft.X = -1 * upperLeft.X;
+            upperLeft.Y = -1 * upperLeft.Y;
+            Size visiblePortion = uxFlowLayoutPanel1.ClientSize;
+
+            map1.ZoomLevel = map1.ZoomLevel - 1; //zoom out
+            Point oldCenter = new Point(upperLeft.X + visiblePortion.Width / 2, upperLeft.Y + visiblePortion.Height / 2);
+            oldCenter = new Point(oldCenter.X / 2 - visiblePortion.Width, oldCenter.Y / 2 - visiblePortion.Height); //zoom out
+            uxFlowLayoutPanel1.AutoScrollPosition = new Point(oldCenter.X - visiblePortion.Width / 2, oldCenter.Y - visiblePortion.Height);
+            UpdateZoomButtons();
         }
     }
 }

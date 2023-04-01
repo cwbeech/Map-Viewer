@@ -23,7 +23,7 @@ namespace Ksu.Cis300.MapViewer
         /// <summary>
         /// Gets an int giving the zoom level for this MapData.
         /// </summary>
-        public int ZoomLevel { get; }
+        public int Zoom { get; }
 
         /// <summary>
         /// Gets a List<LineSegment> containing the line segments to be drawn within the bounds and the zoom level of this MapData.
@@ -38,7 +38,7 @@ namespace Ksu.Cis300.MapViewer
         public MapData(RectangleF bounds, int zoom)
         {
             Bounds = bounds;
-            ZoomLevel = zoom;
+            Zoom = zoom;
             Lines = new List<LineSegment>();
         }
     }
