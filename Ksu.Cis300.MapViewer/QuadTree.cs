@@ -91,20 +91,20 @@ namespace Ksu.Cis300.MapViewer
             }
             MapData rootInfo = new MapData(mapBounds, zoomLevel);
             float splitValue;
-            RectangleF leftChild;
-            RectangleF rightChild;
+            RectangleF leftRectangle;
+            RectangleF rightRectangle;
             int childrenZoomLevel = zoomLevel;
             if (isQuadTreeNode)
             {
                 splitValue = mapBounds.Left + mapBounds.Width / 2;
-                leftChild = new RectangleF(mapBounds.X, mapBounds.Y, mapBounds.Width/2, mapBounds.Height);
-                rightChild = new RectangleF(splitValue, mapBounds.Y, mapBounds.Width/2, mapBounds.Height);
+                leftRectangle = new RectangleF(mapBounds.X, mapBounds.Y, mapBounds.Width/2, mapBounds.Height);
+                rightRectangle = new RectangleF(splitValue, mapBounds.Y, mapBounds.Width/2, mapBounds.Height);
             }
             else
             {
                 splitValue = mapBounds.Top + mapBounds.Height / 2;
-                leftChild = new RectangleF(mapBounds.X, mapBounds.Y, mapBounds.Width, mapBounds.Height/2);
-                rightChild = new RectangleF(mapBounds.X, splitValue, mapBounds.Width, mapBounds.Height/2);
+                leftRectangle = new RectangleF(mapBounds.X, mapBounds.Y, mapBounds.Width, mapBounds.Height/2);
+                rightRectangle = new RectangleF(mapBounds.X, splitValue, mapBounds.Width, mapBounds.Height/2);
                 if (mapBounds.Height*mapBounds.Width < _zoomThreshold)
                 {
                     childrenZoomLevel = zoomLevel + 1; //rewrites in case it is special case.
@@ -136,13 +136,20 @@ namespace Ksu.Cis300.MapViewer
                     rightList.Add(newRight.Reflect());
                 }
             }
-            maxZoomLevel = Math.Max(zoomLevel, childrenZoomLevel);
-            BinaryTreeNode<MapData> leftTreeChild = BuildTree(leftList, mapBounds, zoomLevel, isQuadTreeNode, out maxZoomLevel); //these are probably wrong
-            BinaryTreeNode<MapData> rightTreeChild = BuildTree(rightList, mapBounds, zoomLevel, isQuadTreeNode, out maxZoomLevel);
-            BinaryTreeNode<MapData> root = new BinaryTreeNode<MapData>(new MapData(mapBounds, zoomLevel), leftTreeChild, rightTreeChild);
+            BinaryTreeNode<MapData> leftTreeChild = BuildTree(leftList, leftRectangle, childrenZoomLevel, !isQuadTreeNode, out int leftMaxZoomLevel);
+            BinaryTreeNode<MapData> rightTreeChild = BuildTree(rightList, rightRectangle, childrenZoomLevel, !isQuadTreeNode, out int rightMaxZoomLevel);
+            BinaryTreeNode<MapData> root = new BinaryTreeNode<MapData>(rootInfo, leftTreeChild, rightTreeChild);
+            maxZoomLevel = Math.Max(zoomLevel, (Math.Max(rightMaxZoomLevel, leftMaxZoomLevel)));
             return root;
         }
 
+        /// <summary>
+        /// Method to read a file.
+        /// </summary>
+        /// <param name="fileName">A string giving the filename.</param>
+        /// <param name="maxZoomLevel">An out int giving the maximum zoom level in the file read.</param>
+        /// <returns>Returns a BinaryTreeNode<MapData> giving a quadtree containing the map data read from the file.</returns>
+        /// <exception cref="IOException">Used for exception handling.</exception>
         public static BinaryTreeNode<MapData> Read(string fileName, out int maxZoomLevel)
         {
             List<LineSegment> lineSegments;
@@ -163,7 +170,6 @@ namespace Ksu.Cis300.MapViewer
                 while ((line = input.ReadLine()) != null)
                 {
                     ReadLine(line, out float startX, out float startY, out float endX, out float endY, out int color, out float lineWidth, out int zoomLevel);
-                    //error checking
                     if (startX > boundX || startY > boundY || endX > boundX || endY > boundY)
                     {
                         throw new IOException("Line " + currentLine + " describes a street that is not within the map bounds.");
@@ -179,12 +185,13 @@ namespace Ksu.Cis300.MapViewer
                     if (!_pens.TryGetValue((color, lineWidth), out Pen pen))
                     {
                         pen = new Pen(Color.FromArgb(color)); //if pen not found, then a new pen is created.
+                        _pens.Add((color, lineWidth), pen);
                     }
                     lineSegments.Add(new LineSegment(new PointF(startX, startY), new PointF(endX, endY), zoomLevel, pen));
                     currentLine++;
                 }
             }
-            return BuildTree(lineSegments, rectangle, 0, true, out maxZoomLevel); //fix
+            return BuildTree(lineSegments, rectangle, 0, true, out maxZoomLevel); //fixed?
             
         }
         /// <summary>

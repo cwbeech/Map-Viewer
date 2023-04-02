@@ -41,5 +41,21 @@ namespace Ksu.Cis300.MapViewer
             Zoom = zoom;
             Lines = new List<LineSegment>();
         }
+
+        /// <summary>
+        /// ToString Override. Used for testing.
+        /// </summary>
+        /// <returns>Returns a string representing the MapData.</returns>
+        public override string ToString()
+        {
+            //return (Zoom + "; {X = " + Bounds.X + ",Y=" + Bounds.Y + ",Width=" + Bounds.Width + ",Height=" + Bounds.Height + "}");
+            string result = "";
+            foreach (LineSegment ls in Lines)
+            {
+                result += ("[" + ls.Start + "," + ls.End + "]");
+
+            }
+            return result;
+        }
     }
 }

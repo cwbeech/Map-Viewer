@@ -1,12 +1,14 @@
 ﻿/* UserInterface.cs
  * Author: Calvin Beechner
  */
+using KansasStateUniversity.TreeViewer2;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -62,12 +64,24 @@ namespace Ksu.Cis300.MapViewer
         /// <param name="e"></param>
         private void uxOpenFileToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (uxOpenFileDialog1.ShowDialog() == DialogResult.OK)
+            try
             {
-                map1.QuadTreeLocal = QuadTree.Read(uxOpenFileDialog1.FileName, out int maxZoomLevel);
-                uxFlowLayoutPanel1.AutoScrollPosition = new Point(0, 0);
-                _maxZoomLevel = maxZoomLevel;
-                UpdateZoomButtons();
+                if (uxOpenFileDialog1.ShowDialog() == DialogResult.OK)
+                {
+                    map1.QuadTreeLocal = QuadTree.Read(uxOpenFileDialog1.FileName, out int maxZoomLevel);
+                    uxFlowLayoutPanel1.AutoScrollPosition = new Point(0, 0);
+                    _maxZoomLevel = maxZoomLevel;
+                    UpdateZoomButtons();
+
+                    /* Used for testing
+                    TreeForm treeForm = new TreeForm(map1.QuadTreeLocal, 100);
+                    treeForm.Show();
+                    */
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.ToString());
             }
         }
 
@@ -82,11 +96,10 @@ namespace Ksu.Cis300.MapViewer
             upperLeft.X = -1 * upperLeft.X;
             upperLeft.Y = -1 * upperLeft.Y;
             Size visiblePortion = uxFlowLayoutPanel1.ClientSize;
-
             map1.ZoomLevel = map1.ZoomLevel + 1; //zoom in
+
             Point oldCenter = new Point(upperLeft.X + visiblePortion.Width / 2, upperLeft.Y + visiblePortion.Height / 2);
-            oldCenter = new Point(oldCenter.X * 2 + visiblePortion.Width, oldCenter.Y * 2 + visiblePortion.Height); //zoom in
-            uxFlowLayoutPanel1.AutoScrollPosition = new Point(oldCenter.X - visiblePortion.Width / 2, oldCenter.Y - visiblePortion.Height);
+            uxFlowLayoutPanel1.AutoScrollPosition = new Point(upperLeft.X * 2 + visiblePortion.Width / 2, upperLeft.Y * 2 + visiblePortion.Height / 2); //zoom in
             UpdateZoomButtons();
         }
 
@@ -101,11 +114,10 @@ namespace Ksu.Cis300.MapViewer
             upperLeft.X = -1 * upperLeft.X;
             upperLeft.Y = -1 * upperLeft.Y;
             Size visiblePortion = uxFlowLayoutPanel1.ClientSize;
-
             map1.ZoomLevel = map1.ZoomLevel - 1; //zoom out
+
             Point oldCenter = new Point(upperLeft.X + visiblePortion.Width / 2, upperLeft.Y + visiblePortion.Height / 2);
-            oldCenter = new Point(oldCenter.X / 2 - visiblePortion.Width, oldCenter.Y / 2 - visiblePortion.Height); //zoom out
-            uxFlowLayoutPanel1.AutoScrollPosition = new Point(oldCenter.X - visiblePortion.Width / 2, oldCenter.Y - visiblePortion.Height);
+            uxFlowLayoutPanel1.AutoScrollPosition = new Point(upperLeft.X / 2 - visiblePortion.Width / 4, upperLeft.Y / 2 - visiblePortion.Height / 4); //zoom in
             UpdateZoomButtons();
         }
     }

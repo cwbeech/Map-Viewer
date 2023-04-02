@@ -33,8 +33,8 @@
             this.uxZoomInToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.uxZoomOutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.uxFlowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
-            this.uxOpenFileDialog1 = new System.Windows.Forms.OpenFileDialog();
             this.map1 = new Ksu.Cis300.MapViewer.Map();
+            this.uxOpenFileDialog1 = new System.Windows.Forms.OpenFileDialog();
             this.uxMenuStrip1.SuspendLayout();
             this.uxFlowLayoutPanel1.SuspendLayout();
             this.SuspendLayout();
@@ -49,7 +49,7 @@
             this.uxZoomOutToolStripMenuItem});
             this.uxMenuStrip1.Location = new System.Drawing.Point(0, 0);
             this.uxMenuStrip1.Name = "uxMenuStrip1";
-            this.uxMenuStrip1.Size = new System.Drawing.Size(800, 33);
+            this.uxMenuStrip1.Size = new System.Drawing.Size(800, 36);
             this.uxMenuStrip1.TabIndex = 0;
             this.uxMenuStrip1.Text = "menuStrip1";
             // 
@@ -72,7 +72,7 @@
             // 
             this.uxZoomOutToolStripMenuItem.Enabled = false;
             this.uxZoomOutToolStripMenuItem.Name = "uxZoomOutToolStripMenuItem";
-            this.uxZoomOutToolStripMenuItem.Size = new System.Drawing.Size(111, 29);
+            this.uxZoomOutToolStripMenuItem.Size = new System.Drawing.Size(111, 30);
             this.uxZoomOutToolStripMenuItem.Text = "Zoom Out";
             this.uxZoomOutToolStripMenuItem.Click += new System.EventHandler(this.uxZoomOutToolStripMenuItem_Click);
             // 
@@ -81,14 +81,10 @@
             this.uxFlowLayoutPanel1.AutoScroll = true;
             this.uxFlowLayoutPanel1.Controls.Add(this.map1);
             this.uxFlowLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.uxFlowLayoutPanel1.Location = new System.Drawing.Point(0, 33);
+            this.uxFlowLayoutPanel1.Location = new System.Drawing.Point(0, 36);
             this.uxFlowLayoutPanel1.Name = "uxFlowLayoutPanel1";
-            this.uxFlowLayoutPanel1.Size = new System.Drawing.Size(800, 417);
+            this.uxFlowLayoutPanel1.Size = new System.Drawing.Size(800, 414);
             this.uxFlowLayoutPanel1.TabIndex = 1;
-            // 
-            // uxOpenFileDialog1
-            // 
-            this.uxOpenFileDialog1.Filter = "CSV files|*.csv|All files|*.*";
             // 
             // map1
             // 
@@ -100,6 +96,10 @@
             this.map1.Size = new System.Drawing.Size(150, 150);
             this.map1.TabIndex = 0;
             this.map1.ZoomLevel = 1;
+            // 
+            // uxOpenFileDialog1
+            // 
+            this.uxOpenFileDialog1.Filter = "CSV files|*.csv|All files|*.*";
             // 
             // UserInterface
             // 

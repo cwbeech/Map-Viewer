@@ -8,7 +8,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-
 namespace Ksu.Cis300.MapViewer
 {
     /// <summary>
